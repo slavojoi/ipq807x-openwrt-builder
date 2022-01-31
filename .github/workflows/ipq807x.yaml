@@ -94,6 +94,7 @@ jobs:
           echo "CONFIG_PACKAGE_less-wide=y" >> .config
           echo "CONFIG_PACKAGE_lldpd=y" >> .config
           echo "CONFIG_PACKAGE_miniupnpd=y" >> .config
+          echo "CONFIG_PACKAGE_mwan3=y" >> .config
           echo "CONFIG_PACKAGE_procd-seccomp=y" >> .config
           echo "CONFIG_PACKAGE_qos-scripts=y" >> .config
           echo "CONFIG_PACKAGE_wireguard=y" >> .config
