@@ -14,7 +14,7 @@ jobs:
           curl -sL "https://api.github.com/repos/$REMOTE_REPOSITORY/commits?sha=$REMOTE_BRANCH&per_page=1" | jq -r '[.[]][0]' > commit.json
         env:
           REMOTE_REPOSITORY: robimarko/openwrt
-          REMOTE_BRANCH: ipq807x-5.15
+          REMOTE_BRANCH: ipq807x-5.15-pr
       - name: Calculate hours since last commit
         id: calc
         run: |
@@ -76,6 +76,7 @@ jobs:
           echo "CONFIG_PACKAGE_wpad-mini=n" >> .config
           echo "CONFIG_PACKAGE_wpad-basic-wolfssl=n" >> .config
           echo "CONFIG_PACKAGE_wpad-wolfssl=y" >> .config
+          echo "CONFIG_PACKAGE_libwolfssl=y" >> .config
           # services and tools
           echo "CONFIG_PACKAGE_wireguard=y" >> .config
           echo "CONFIG_PACKAGE_arp-scan=y" >> .config
@@ -97,7 +98,6 @@ jobs:
           echo "CONFIG_PACKAGE_mwan3=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-mwan3=y" >> .config
           echo "CONFIG_PACKAGE_procd-seccomp=y" >> .config
-          echo "CONFIG_PACKAGE_qos-scripts=y" >> .config
           echo "CONFIG_PACKAGE_wireguard=y" >> .config
           echo "CONFIG_PACKAGE_wget=y" >> .config
           # luci
@@ -107,20 +107,36 @@ jobs:
           echo "CONFIG_PACKAGE_luci-theme-bootstrap=y" >> .config          
           echo "CONFIG_PACKAGE_luci-app-ddns=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-firewall=y" >> .config
-          echo "CONFIG_PACKAGE_luci-app-qos=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-upnp=y" >> .config
           echo "CONFIG_PACKAGE_luci-mod-dashboard=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-wireguard=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-ddns=y" >> .config
           echo "CONFIG_PACKAGE_less=n" >> .config
-          #firewall3
-          echo "CONFIG_PACKAGE_firewall=y" >> .config
-          echo "CONFIG_PACKAGE_ip6tables=y" >> .config
-          echo "CONFIG_PACKAGE_iptables=y" >> .config
-          echo "CONFIG_PACKAGE_kmod-ipt-offload=y" >> .config
+          # firewall4
+          echo "CONFIG_IPTABLES_NFTABLES=y" >> .config
+          echo "CONFIG_PACKAGE_firewall=n" >> .config
+          echo "CONFIG_PACKAGE_ip6tables=n" >> .config
+          echo "CONFIG_PACKAGE_iptables=n" >> .config
+          echo "CONFIG_PACKAGE_kmod-ipt-offload=n" >> .config
+          echo "CONFIG_PACKAGE_firewall4=y" >> .config
+          echo "CONFIG_PACKAGE_nftables=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-offload=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-conntrack=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-flow=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-ipt=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-nat=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-reject=y" >> .config
           echo "CONFIG_NETFILTER_NETLINK=m" >> .config
           echo "CONFIG_NETFILTER_NETLINK_HOOK=m" >> .config
-          
+          # IPv6 support 
+          echo "CONFIG_PACKAGE_luci-proto-ipv6=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-ipt6=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-reject6=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-nft-conntrack6=y" >> .config
+          echo "CONFIG_PACKAGE_6in4=y" >> .config
+          echo "CONFIG_PACKAGE_6to4=y" >> .config
+          echo "CONFIG_PACKAGE_6rd=y" >> .config
+          echo "CONFIG_PACKAGE_kmod-sit=y" >> .config         
           make defconfig
       - name: Enable WiFi on default config
         run: |
@@ -172,6 +188,6 @@ jobs:
           repo_token: '${{ secrets.GITHUB_TOKEN }}'
           prerelease: true
           title: 'Updated prebuilt images (${{ env.BUILDINFO }})'
-          automatic_release_tag: ipq807x-latest@v3.1
+          automatic_release_tag: ipq807x-latest@v5.1
           files: bin/targets/ipq807x/generic/*
      
