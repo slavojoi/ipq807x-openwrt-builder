@@ -111,6 +111,7 @@ jobs:
           echo "CONFIG_PACKAGE_luci-mod-dashboard=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-wireguard=y" >> .config
           echo "CONFIG_PACKAGE_luci-app-ddns=y" >> .config
+          echo "CONFIG_PACKAGE_luci-ssl=y" >> .config
           echo "CONFIG_PACKAGE_less=n" >> .config
           # firewall4
           echo "CONFIG_IPTABLES_NFTABLES=y" >> .config
